@@ -1,5 +1,6 @@
 import java.util.Arrays;
 import java.util.stream.Collectors;
+import java.util.Comparator;
 
 public class Owner {
     private String name;
@@ -122,7 +123,7 @@ public class Owner {
                 counter += 1;
             }
         }
-        return outputArray;
+        return DogSorter.sort(SortingAlgorithm.QUICK_SORT, Comparator.comparing(Dog::getName),outputArray);
     }
 
     public boolean removeDog(String dogName) {
