@@ -5,7 +5,8 @@ public class App {
     public static void main(String[] args) {
         String test = "this is my string AND i want the formatter tO fUnCtion";
         stringFormatter(test);
-        System.out.println(stringFormatter(test));
+        Dog dog = new Dog(test, test, 12, 13);
+        System.out.println(dog.getTailLength());
     }
     static String stringFormatter(String input){
         return Arrays.stream(input.trim().toLowerCase().split("\\s+"))

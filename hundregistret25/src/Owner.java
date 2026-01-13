@@ -4,119 +4,163 @@ import java.util.stream.Collectors;
 public class Owner {
     private String name;
     private Dog[] ownedDogs = new Dog[7];
-    public Owner(String inputName){
+    private boolean dogSyncActive = false;
+
+    public Owner(String inputName) {
         this.name = inputName.toUpperCase();
     }
-    public Owner(String inputName, Dog... dogs){
+
+    public Owner(String inputName, Dog... dogs) {
         this(inputName);
-        for (Dog dog:dogs){
+        for (Dog dog : dogs) {
             addDog(dog);
         }
-
-
     }
 
-    static String stringFormatter(String input){
+    private String stringFormatter(String input) {
         return Arrays.stream(input.trim().toLowerCase().split("\\s+"))
-                     .map(word -> Character.toUpperCase(word.charAt(0)) + word.substring(1))
-                     .collect(Collectors.joining(" "));
+                .map(word -> Character.toUpperCase(word.charAt(0)) + word.substring(1))
+                .collect(Collectors.joining(" "));
     }
-            // i found the method above at https://stackoverflow.com/questions/1892765/how-to-capitalize-the-first-character-of-each-word-in-a-string 
-            // however i did modify it with .trim() and .toLowerCase() to suit requirements
-            // it functions by first trimming and setting the string to lowercase. it splits 
-    public String getName(){
-        return stringFormatter(name);
-        }
+    // i found the method above at
+    // https://stackoverflow.com/questions/1892765/how-to-capitalize-the-first-character-of-each-word-in-a-string
+    // see futher description in dog.java
 
-    public String toString(){
-        return  name;
+    public String getName() {
+        return stringFormatter(name);
     }
-    public boolean ownsAnyDog(){
-        for (Dog dog:ownedDogs){
-            if (dog != null){
+
+    public String toString() {
+        String dogs = "";
+        for (Dog dog : ownedDogs) {
+            if (dog != null) {
+                dogs = dogs + " : " + dog.getName();
+            }
+        }
+        return name + dogs;
+    }
+
+    public boolean ownsAnyDog() {
+        for (Dog dog : ownedDogs) {
+            if (dog != null) {
                 return true;
             }
         }
         return false;
     }
-    public boolean ownsMaxDogs(){
-        for (int i=0;i<ownedDogs.length;i++){
-            if (ownedDogs[i] == null){
+
+    public boolean ownsMaxDogs() {
+        for (int i = 0; i < ownedDogs.length; i++) {
+            if (ownedDogs[i] == null) {
                 return false;
             }
         }
         return true;
     }
 
-    public boolean ownsDog(String name){
-        for (Dog dog: ownedDogs){
-            if(dog!=null){
-                if(stringFormatter(name).equals(dog.getName())){
+    public boolean ownsDog(String name) {
+        for (Dog dog : ownedDogs) {
+            if (dog != null) {
+                if (stringFormatter(name).equals(dog.getName())) {
                     return true;
                 }
             }
         }
         return false;
     }
-    public boolean ownsDog(Dog checkDog){
-        for (Dog dog: ownedDogs){
-            if(dog==checkDog){
+
+    public boolean ownsDog(Dog checkDog) {
+        for (Dog dog : ownedDogs) {
+            if (dog == checkDog) {
                 return true;
             }
         }
         return false;
     }
-    public boolean addDog(Dog dog){
-        for (Dog ownedDog : ownedDogs){
-            if (ownedDog == dog){
-            return false;
+
+    public boolean addDog(Dog dog) {
+        if (dogSyncActive == true) {
+            return true;
+        }
+        dogSyncActive = true;
+        for (Dog ownedDog : this.getDogs()) {
+            if (ownedDog == dog || ownedDog.getName().equals(dog.getName())) {
+                dogSyncActive = false;
+                return false;
             }
         }
+
+        dogSyncActive = true;
+        dog.setOwner(this);
         if (ownsDog(dog.getName())) {
             return false;
         }
-        for (int i=0; i<ownedDogs.length;i++){
-            if (ownedDogs[i]==null){
-            ownedDogs[i] = dog;
-            return true;
+        for (int i = 0; i < ownedDogs.length; i++) {
+            if (ownedDogs[i] == null) {
+                ownedDogs[i] = dog;
+                ownedDogs[i].setOwner(this);
+                dogSyncActive = false;
+                return true;
             }
         }
+        dogSyncActive = false;
         return false;
     }
-    public Dog[] getDogs(){
+
+    public Dog[] getDogs() {
         int counter = 0;
-        for (Dog dog : ownedDogs){
-            if (dog==null){
-                counter+=1;
+        for (Dog dog : ownedDogs) {
+            if (dog == null) {
+                counter += 1;
             }
         }
-        Dog[] outputArray = new Dog[7-counter];
+        Dog[] outputArray = new Dog[7 - counter];
         counter = 0;
-        for (Dog dog : ownedDogs){
-            if (dog!=null){
+        for (Dog dog : ownedDogs) {
+            if (dog != null) {
                 outputArray[counter] = dog;
-                counter+=1;
+                counter += 1;
             }
         }
         return outputArray;
     }
-    public boolean removeDog(String dogName){
-        for (int i=0; i<ownedDogs.length;i++){
-            if(ownedDogs[i]!=null)
-                if(stringFormatter(dogName).equals(ownedDogs[i].getName())){
+
+    public boolean removeDog(String dogName) {
+        if (dogSyncActive == true) {
+            return true;
+        }
+        dogSyncActive = true;
+        for (int i = 0; i < ownedDogs.length; i++) {
+            if (ownedDogs[i] != null)
+                if (stringFormatter(dogName).equals(ownedDogs[i].getName())) {
+                    this.ownedDogs[i].setOwner(null);
                     ownedDogs[i] = null;
+                    dogSyncActive = false;
                     return true;
                 }
         }
+        dogSyncActive = false;
         return false;
     }
-    public boolean removeDog(Dog checkDog){
-        for (int i=0; i<ownedDogs.length;i++){
-            if(checkDog==ownedDogs[i]){
+
+    public boolean removeDog(Dog checkDog) {
+        if (dogSyncActive == true) {
+            return true;
+        }
+        dogSyncActive = true;
+        for (int i = 0; i < this.ownedDogs.length; i++) {
+            if (checkDog == this.ownedDogs[i]) {
+                this.ownedDogs[i].setOwner(null);
                 ownedDogs[i] = null;
+                dogSyncActive = false;
                 return true;
             }
         }
+        dogSyncActive = false;
         return false;
+    }
+
+    public void resetDogs() {
+        this.ownedDogs = new Dog[7];
     }
 }
