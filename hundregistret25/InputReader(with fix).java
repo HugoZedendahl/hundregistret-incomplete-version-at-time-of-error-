@@ -1,0 +1,70 @@
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
+public class InputReader {
+    private static boolean instanceTracker;
+    private Scanner input;
+
+    public InputReader(Scanner scanner) {
+        this.input = scanner;
+        if (instanceTracker) {
+            throw new IllegalStateException("internal reader error");
+        }
+        instanceTracker = true;
+    }
+
+    public InputReader() {
+        this(new Scanner(System.in));
+    }
+
+    public int scanInt(String prompt) {
+        int output;
+        do {
+            System.out.println(prompt + "?>");
+            try{
+                output = input.nextInt();
+            } catch (InputMismatchException e){
+                System.out.println("Error: Input Mismatch, Please enter Numbers");
+                input.next();
+                output = scanInt(prompt);
+            }
+            input.nextLine();
+            input.nextLine();
+            if (output < 0) {
+                System.out.println("Error: number cannot be negative, try again.");
+            }
+        } while (output < 0);
+        return output;
+    }
+
+    public double scanDouble(String prompt) {
+        double output;
+        do {
+            System.out.println(prompt + "?>");
+            try{
+                output = input.nextDouble();
+            } catch (InputMismatchException e){
+                System.out.println("Error: Input Mismatch, Please enter Numbers");
+                input.next();
+                output = scanDouble(prompt);
+            }
+            input.nextLine();
+            if (output < 0) {
+                System.out.println("Error: number cannot be negative, try again.");
+            }
+        } while (output < 0);
+        return output;
+    }
+
+    public String scanString(String prompt) {
+        String output;
+        do {
+            System.out.println(prompt + "?>");
+            output = input.nextLine();
+            if (output.trim().isEmpty()) {
+                System.out.println("Error: must not be empty or blank, try again.");
+            }
+        } while (output.trim().isEmpty());
+        return output.trim();
+    }
+}

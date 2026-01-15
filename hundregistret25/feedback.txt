@@ -1,0 +1,49 @@
+this are notes for feedback at granskning 2:
+    note in my format, bullet points it is.
+
+    stil och struktur: 
+        är varningar fel?: mitt svar är varningar är inte fel meddelanden, mest förslag får best practice, därför "nej." men de ska följas till bästa förmåga. 
+        svar: ja, de ska antas som fel
+
+        undvik undantag just nu.
+
+        korta medoder i OOC ska vara kort. försök korta ned dem. få ned till 10 rader(gärna fler). kanske if(x || y ||z) för att nesta checks?
+
+        använd fler hjälpmetoder(really do this)
+
+        namngivning: this is a big and important thing. make sure to listen and note
+
+        the current task is very hard when it comes to style. 
+
+        dont be cute with code naming.
+
+        example of bad naming is actually in the task itself. .getDogs() och getAllOwners() do not fix this this is part of the spec sheet
+
+        skydds nivåer: make sure you keep your stuff private. (self note, use void more often insted of just bools)
+
+        inga speciella anmärkningar på namn. (egen anmärkning SPECIAL_BREED_TAIL kanske dåligt namn BREED_WITH_STATIC_TAIL_LENGTH ist)?
+
+        struktur: ha extra koll på statiska metoder. det finns bra anledningar. denna uppgift är inte en av dem.
+
+        uncouple the comparator from the class. add the string formatter from inside the classes and make it static. 
+
+        right now classes are small enough to not split up. later you should concider it. 
+
+        keep arrows in scope. 
+
+        feedback 2: tax namnet anmärktes.  namn final? fixa comparator instansiering innuti metod. 
+
+        ägarclassen
+
+        sorteringen: ingen direkt feedback, jag behöver beskriva den bättre, det är en wost case implementation då den börjar på max index. kanske fixa det?
+
+        hundregistret: en metod, en sak. gör inte flera saker. 
+
+        nested if statments instead of sequential ones? ask later.
+
+
+
+        
+
+
+
