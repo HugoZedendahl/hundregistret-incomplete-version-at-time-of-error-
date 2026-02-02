@@ -1,15 +1,12 @@
-import java.util.Arrays;
-import java.util.stream.Collectors;
 import java.util.Comparator;
 
 public class Owner {
-    private static final int MAX_DOGS_ALLOWED=7;
+    private static final int MAX_DOGS_ALLOWED = 7;
     private String name;
     private Dog[] ownedDogs = new Dog[MAX_DOGS_ALLOWED];
     private boolean dogSyncActive;
-    
 
-    public Owner(String inputName) {
+    private Owner(String inputName) {
         this.name = inputName.toUpperCase();
     }
 
@@ -20,17 +17,9 @@ public class Owner {
         }
     }
 
-    private String stringFormatter(String input) {
-        return Arrays.stream(input.trim().toLowerCase().split("\\s+"))
-                .map(word -> Character.toUpperCase(word.charAt(0)) + word.substring(1))
-                .collect(Collectors.joining(" "));
-    }
-    // i found the method above at
-    // https://stackoverflow.com/questions/1892765/how-to-capitalize-the-first-character-of-each-word-in-a-string
-    // see futher description in dog.java
-
     public String getName() {
-        return stringFormatter(name);
+        StringFormatter formatter = new StringFormatter();
+        return formatter.format(name);
     }
 
     public String toString() {
@@ -62,9 +51,10 @@ public class Owner {
     }
 
     public boolean ownsDog(String name) {
+        StringFormatter formatter = new StringFormatter();
         for (Dog dog : ownedDogs) {
             if (dog != null) {
-                if (stringFormatter(name).equals(dog.getName())) {
+                if (formatter.format(name).equals(dog.getName())) {
                     return true;
                 }
             }
@@ -125,17 +115,18 @@ public class Owner {
                 counter += 1;
             }
         }
-        return DogSorter.sort(SortingAlgorithm.QUICK_SORT, Comparator.comparing(Dog::getName),outputArray);
+        return DogSorter.sort(SortingAlgorithm.QUICK_SORT, Comparator.comparing(Dog::getName), outputArray);
     }
 
     public boolean removeDog(String dogName) {
         if (dogSyncActive) {
             return true;
         }
+        StringFormatter formatter = new StringFormatter();
         dogSyncActive = true;
         for (int i = 0; i < ownedDogs.length; i++) {
             if (ownedDogs[i] != null)
-                if (stringFormatter(dogName).equals(ownedDogs[i].getName())) {
+                if (formatter.format(dogName).equals(ownedDogs[i].getName())) {
                     this.ownedDogs[i].setOwner(null);
                     ownedDogs[i] = null;
                     dogSyncActive = false;
@@ -161,9 +152,5 @@ public class Owner {
         }
         dogSyncActive = false;
         return false;
-    }
-
-    public void resetDogs() {
-        this.ownedDogs = new Dog[MAX_DOGS_ALLOWED];
     }
 }

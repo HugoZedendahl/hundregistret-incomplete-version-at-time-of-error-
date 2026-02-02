@@ -1,4 +1,4 @@
 public enum SortingAlgorithm {
-        BUBBLE_SORT,
-        QUICK_SORT
-    }
+    BUBBLE_SORT,
+    QUICK_SORT
+}

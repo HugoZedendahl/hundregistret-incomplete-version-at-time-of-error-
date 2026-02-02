@@ -2,15 +2,9 @@ import java.util.Comparator;
 
 public class DogSorter {
 
-    public static void sort(SortingAlgorithm algorithm, Comparator<Dog> comparator, Owner owner) {
-        Dog[] doglist = owner.getDogs();
-        doglist = sort(algorithm, comparator, doglist);
-        owner.resetDogs();
-        for (int i = 0; i < doglist.length; i++) {
-            owner.addDog(doglist[i]);
-        }
+    private DogSorter(){
+        System.out.println("Error, do not instanciate this class");
     }
-
     public static Dog[] sort(SortingAlgorithm algorithm, Comparator<Dog> comparator, Dog[] dogs) {
 
         switch (algorithm) {
@@ -26,17 +20,17 @@ public class DogSorter {
     }
 
     private static void bubbleSort(Comparator<Dog> comparator, Dog[] dogs) {
-        int i;
-        int x;
+        int outerLoop;
+        int innerLoop;
         Dog temp;
         boolean check;
-        for (i = 0; i < dogs.length - 1; i++) {
+        for (outerLoop = 0; outerLoop < dogs.length - 1; outerLoop++) {
             check = false;
-            for (x = 0; x < dogs.length - i - 1; x++) {
-                if (comparator.compare(dogs[x + 1], dogs[x]) < 0) {
-                    temp = dogs[x];
-                    dogs[x] = dogs[x + 1];
-                    dogs[x + 1] = temp;
+            for (innerLoop = 0; innerLoop < dogs.length - outerLoop - 1; innerLoop++) {
+                if (comparator.compare(dogs[innerLoop + 1], dogs[innerLoop]) < 0) {
+                    temp = dogs[innerLoop];
+                    dogs[innerLoop] = dogs[innerLoop + 1];
+                    dogs[innerLoop + 1] = temp;
                     check = true;
                 }
             }

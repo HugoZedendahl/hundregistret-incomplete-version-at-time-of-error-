@@ -1,17 +1,13 @@
-import java.util.Arrays;
-import java.util.stream.Collectors;
-
 public class Dog {
-    
+
     private static final double SPECIAL_BREED_TAIL = 3.7;
-    
+
     private String dogName;
     private String dogBreed;
     private int dogAge;
     private double dogWeight;
     private Owner dogOwner;
     private boolean dogSyncActive;
-    
 
     public Dog(String name, String breed, int age, double weight) {
         if (name.equals("") || name == null) {
@@ -40,34 +36,20 @@ public class Dog {
         this.dogOwner = owner;
     }
 
-    private String stringFormatter(String input) {
-        return Arrays.stream(input.trim().toLowerCase().split("\\s+"))
-                .map(word -> Character.toUpperCase(word.charAt(0)) + word.substring(1))
-                .collect(Collectors.joining(" "));
-    }
-
-    // i found the method above at
-    // https://stackoverflow.com/questions/1892765/how-to-capitalize-the-first-character-of-each-word-in-a-string
-    // the arrays.stream splitting the strin into smaller strings using the "\\s+"
-    // regex i found there i did modify it with .trim() and .toLowerCase() to suit
-    // requirements
-    // the map functions + merges the capitalized first character together with the
-    // rest of the substring
-    // the collect functions groups all strings back into a singular, properly
-    // formatted string.
-
     public String getName() {
         if (dogName.isEmpty()) {
             return null;
         }
-        return stringFormatter(dogName);
+        StringFormatter formatter = new StringFormatter();
+        return formatter.format(dogName);
     }
 
     public String getBreed() {
         if (dogBreed.isEmpty()) {
             return null;
         }
-        return stringFormatter(dogBreed);
+        StringFormatter formatter = new StringFormatter();
+        return formatter.format(dogBreed);
     }
 
     public int getWeight() {
@@ -133,10 +115,12 @@ public class Dog {
         this.dogSyncActive = false;
         return true;
     }
-    private boolean syncChecker(Owner owner){
+
+    private boolean syncChecker(Owner owner) {
         Dog[] sync = owner.getDogs();
+        StringFormatter formatter = new StringFormatter();
         for (Dog dog : sync) {
-            if (dog.getName().equals(stringFormatter(this.dogName))) {
+            if (dog.getName().equals(formatter.format(this.dogName))) {
                 return true;
             }
         }
